@@ -13,11 +13,60 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "BRAYSA Caps | Gorras Exclusivas y Colecciones Oficiales",
+  title: "BRAYSA Caps | Gorras Streetwear y Colecciones con Regulador en Bolivia",
   description:
-    "Descubrí gorras BRAYSA originales con diseños exclusivos, snapbacks, curvas y trucker disponibles en Bolivia.",
+    "Tienda oficial de gorras urbanas BRAYSA Caps en Bolivia. Modelos con visera curva, snapback planas y trucker con regulador graduable. Envíos inmediatos a todo el país y pedidos directos por WhatsApp.",
+  keywords: [
+    "gorras bolivia",
+    "braysa caps",
+    "gorras la paz",
+    "gorras santa cruz",
+    "gorras cochabamba",
+    "gorras con regulador",
+    "visera curva bolivia",
+    "snapback bolivia",
+    "streetwear bolivia",
+  ],
+  authors: [{ name: "BRAYSA Caps Bolivia" }],
+  creator: "BRAYSA Caps",
+  metadataBase: new URL("https://braysa-caps-frontend.vercel.app"),
+  openGraph: {
+    title: "BRAYSA Caps | Gorras Streetwear y Exclusivas en Bolivia",
+    description:
+      "Catálogo oficial de gorras con regulador graduable. Visera curva, snapback y trucker en más de 10 colores. ¡Pide directo por WhatsApp con envío garantizado!",
+    url: "https://braysa-caps-frontend.vercel.app",
+    siteName: "BRAYSA Caps Bolivia",
+    locale: "es_BO",
+    type: "website",
+    images: [
+      {
+        url: "/banners/banner_caps.jpg",
+        width: 1200,
+        height: 630,
+        alt: "BRAYSA Caps - Headwear Vanguard Bolivia",
+      },
+      {
+        url: "/BRAYSA_logos/negro/BRAYSA_01_logo_principal_grande_negro.png",
+        width: 800,
+        height: 800,
+        alt: "Logo BRAYSA Caps",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "BRAYSA Caps | Gorras Streetwear Bolivia",
+    description:
+      "Gorras urbanas con regulador ajustable. Envíos a toda Bolivia y compras directas por WhatsApp.",
+    images: ["/banners/banner_caps.jpg"],
+  },
   icons: {
     icon: "/BRAYSA_logos/negro/BRAYSA_04_icono_negro.png",
+    apple: "/BRAYSA_logos/negro/BRAYSA_04_icono_negro.png",
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
