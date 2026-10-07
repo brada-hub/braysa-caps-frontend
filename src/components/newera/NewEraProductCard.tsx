@@ -50,8 +50,12 @@ export default function NewEraProductCard({
     ? 1
     : currentImageIdx;
 
+  const currentColorObj = product.colors.find((c) => c.name === selectedColor);
   const activeImageSrc =
-    product.images[displayedIdx] || product.images[0] || '/cdn/p_yankees_1.jpg';
+    currentColorObj?.image ||
+    product.images[displayedIdx] ||
+    product.images[0] ||
+    '/cdn/p_yankees_1.jpg';
 
   return (
     <div className="bg-white border border-neutral-200/90 rounded-sm hover:border-black transition-all duration-200 flex flex-col justify-between group overflow-hidden h-full">
@@ -207,22 +211,29 @@ export default function NewEraProductCard({
             </span>
           </div>
 
-          {/* Color Swatches */}
+          {/* Color Swatches with Instant Preview */}
           {product.colors.length > 1 && (
-            <div className="flex items-center gap-1.5 pt-1">
+            <div className="flex flex-wrap items-center gap-1.5 pt-1">
               {product.colors.map((c) => (
                 <button
                   key={c.name}
                   type="button"
-                  onClick={() => setSelectedColor(c.name)}
-                  className={`w-4 h-4 rounded-full border transition-all cursor-pointer ${selectedColor === c.name
-                      ? 'ring-2 ring-black ring-offset-1 scale-110'
-                      : 'border-neutral-300 hover:scale-105'
-                    }`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedColor(c.name);
+                  }}
+                  className={`w-3.5 h-3.5 rounded-full border transition-all cursor-pointer ${
+                    selectedColor === c.name
+                      ? 'ring-2 ring-black ring-offset-1 scale-125'
+                      : 'border-neutral-300 hover:scale-110'
+                  }`}
                   style={{ backgroundColor: c.hex }}
                   title={c.name}
                 />
               ))}
+              <span className="text-[10px] font-bold text-neutral-500 pl-1 truncate max-w-[120px]">
+                {selectedColor}
+              </span>
             </div>
           )}
         </div>

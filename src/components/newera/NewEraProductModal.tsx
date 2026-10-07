@@ -36,6 +36,19 @@ export default function NewEraProductModal({
   const formatPrice = (val: number) =>
     `Bs. ${Math.round(val || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`;
 
+  // Find if selected color has an exact photo
+  const currentColorObj = product.colors.find((c) => c.name === selectedColor);
+  const activeMainImage = currentColorObj?.image || product.images[selectedImageIdx] || product.images[0];
+
+  const handleSelectColor = (colorName: string) => {
+    setSelectedColor(colorName);
+    const found = product.colors.find((c) => c.name === colorName);
+    if (found?.image) {
+      const idx = product.images.indexOf(found.image);
+      if (idx >= 0) setSelectedImageIdx(idx);
+    }
+  };
+
   const handleAdd = () => {
     onAddToCart(product, selectedColor, selectedSize, quantity);
     setIsAddedAnimation(true);
@@ -46,7 +59,7 @@ export default function NewEraProductModal({
   };
 
   const handleBuyWhatsApp = () => {
-    const text = `¡Hola BRAYSA Caps! 👋 Me interesa comprar la gorra *${product.name}* (${product.silhouette}) en talla *${selectedSize}* (Color: *${selectedColor}*, Cantidad: *${quantity}x*, Precio: *${formatPrice(product.price * quantity)}*). ¿Tienen disponibilidad para envío inmediato a mi ciudad?`;
+    const text = `¡Hola BRAYSA Caps! 👋 Me interesa comprar la gorra *${product.name}* (${product.silhouette}) en color *${selectedColor}* (Talla: *${selectedSize}*, Cantidad: *${quantity}x*, Precio: *${formatPrice(product.price * quantity)}*). ¿Tienen disponibilidad para envío inmediato a mi ciudad?`;
     window.open(`https://api.whatsapp.com/send?phone=59167544099&text=${encodeURIComponent(text)}`, '_blank');
   };
 
@@ -72,12 +85,12 @@ export default function NewEraProductModal({
 
           {/* Left Column: Image Gallery */}
           <div className="w-full md:w-1/2 bg-[#f8f8f8] p-6 flex flex-col justify-between items-center border-b md:border-b-0 md:border-r border-neutral-200">
-            {/* Main Picture */}
+            {/* Main Picture with transition */}
             <div className="relative aspect-square w-full max-w-sm rounded-lg overflow-hidden flex items-center justify-center">
               <img
-                src={product.images[selectedImageIdx] || product.images[0]}
-                alt={product.name}
-                className="w-full h-full object-cover"
+                src={activeMainImage}
+                alt={`${product.name} - ${selectedColor}`}
+                className="w-full h-full object-cover transition-all duration-300"
               />
             </div>
 
@@ -151,27 +164,39 @@ export default function NewEraProductModal({
 
               {/* Color Selection */}
               <div className="mt-4">
-                <label className="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-2">
-                  Color: <span className="font-normal text-neutral-900">{selectedColor}</span>
-                </label>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-xs font-bold uppercase tracking-wider text-neutral-700">
+                    Color:
+                  </label>
+                  <span className="text-xs font-black text-neutral-900 bg-neutral-100 px-2.5 py-0.5 rounded-full border border-neutral-200">
+                    {selectedColor}
+                  </span>
+                </div>
                 <div className="flex flex-wrap gap-2">
-                  {product.colors.map((c) => (
-                    <button
-                      key={c.name}
-                      type="button"
-                      onClick={() => setSelectedColor(c.name)}
-                      className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-medium transition-all cursor-pointer ${selectedColor === c.name
-                          ? 'border-black bg-neutral-100 font-bold shadow-xs'
-                          : 'border-neutral-200 hover:border-neutral-400'
+                  {product.colors.map((c) => {
+                    const isSelected = selectedColor === c.name;
+                    return (
+                      <button
+                        key={c.name}
+                        type="button"
+                        onClick={() => handleSelectColor(c.name)}
+                        className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-medium transition-all cursor-pointer ${
+                          isSelected
+                            ? 'border-black bg-neutral-900 text-white font-bold shadow-xs scale-102'
+                            : 'border-neutral-200 hover:border-neutral-400 bg-white text-neutral-800'
                         }`}
-                    >
-                      <span
-                        className="w-3 h-3 rounded-full border border-neutral-300"
-                        style={{ backgroundColor: c.hex }}
-                      />
-                      <span>{c.name}</span>
-                    </button>
-                  ))}
+                        title={c.name}
+                      >
+                        <span
+                          className={`w-3.5 h-3.5 rounded-full border ${
+                            isSelected ? 'border-white' : 'border-neutral-300'
+                          }`}
+                          style={{ backgroundColor: c.hex }}
+                        />
+                        <span>{c.name}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
